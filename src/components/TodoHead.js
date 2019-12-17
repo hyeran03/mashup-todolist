@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useTodoState } from "../TodoContext";
 
 const TodoHeadBlock = styled.div`
   /* 내부에 특정을 넣어 바로 선택하도록 */
@@ -26,11 +27,26 @@ const TodoHeadBlock = styled.div`
 `;
 
 function TodoHead() {
+  //할일 개수 변화 -done: true or false에따라
+  const todos = useTodoState();
+  const undoneTasks = todos.filter(todo => !todo.done);
+
+  //날짜 변화(javsscript)
+  const today = new Date();
+  const dateString = today.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+  const dayName = today.toLocaleDateString("ko-KR", {
+    weekday: "long"
+  });
+
   return (
     <TodoHeadBlock>
-      <h1>2019년 12월 17일</h1>
-      <div className="day">화요일</div>
-      <div className="tasks-left">할 일 2개 남음</div>
+      <h1>{dateString}</h1>
+      <div className="day">{dayName}</div>
+      <div className="tasks-left">할 일 {undoneTasks.length}개 남음</div>
     </TodoHeadBlock>
   );
 }
